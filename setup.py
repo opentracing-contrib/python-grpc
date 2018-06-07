@@ -20,7 +20,7 @@ def readme():
 
 setup(
     name='grpcio-opentracing',
-    version='1.1.1',
+    version='1.1.2',
     description='Python OpenTracing Extensions for gRPC',
     long_description=readme(),
     author='LightStep',

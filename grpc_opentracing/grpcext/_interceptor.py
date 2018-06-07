@@ -204,6 +204,11 @@ class _InterceptorChannel(grpc.Channel):
         else:
             return base_callable
 
+    def close(self):
+        if not hasattr(self._channel, 'close'):
+            raise RuntimeError('close() is not supported with the installed version of grpcio')
+        self._channel.close()
+
 
 def intercept_channel(channel, *interceptors):
     result = channel

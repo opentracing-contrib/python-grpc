@@ -53,8 +53,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            python2 -m virtualenv venv
-            . venv/bin/activate
+            sudo python2 -m virtualenv venv
+            sudo . venv/bin/activate
             pip install -r requirements-test.txt
 
       - save_cache:
@@ -65,7 +65,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            . venv/bin/activate
+            sudo . venv/bin/activate
             python setup.py test
 
 workflows:

@@ -131,8 +131,6 @@ workflows:
       - build_python3
       - build_python2
       - deploy:
-          requires:
-            - build_python3
           filters:
             branches:
               ignore: /.*/

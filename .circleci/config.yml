@@ -116,6 +116,8 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install pandoc
+            pip install wheel
             python setup.py sdist
             python setup.py bdist_wheel
 

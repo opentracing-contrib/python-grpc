@@ -50,6 +50,7 @@ tracing spans. On the client-side, you can write a class that derives from
 
 ```python
 class CustomActiveSpanSource(ActiveSpanSource):
+  @classmethod
   def get_active_span(self):
     # your custom method of getting the active span
 tracer = # some OpenTracing Tracer instance

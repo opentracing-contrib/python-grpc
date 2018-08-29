@@ -6,7 +6,7 @@ import tempfile
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
-VERSION='1.1.2'
+VERSION='1.1.3'
 
 def readme():
   """Use `pandoc` to convert `README.md` into a `README.rst` file."""

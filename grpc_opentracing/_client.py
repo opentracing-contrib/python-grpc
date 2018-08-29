@@ -46,7 +46,7 @@ def _inject_span_context(tracer, span, metadata):
         span.log_kv({'event': 'error', 'error.object': e})
         return metadata
     metadata = () if metadata is None else tuple(metadata)
-    return metadata + tuple(iteritems(headers))
+    return metadata + tuple((k.lower(), v) for (k, v) in iteritems(headers))
 
 
 def _make_future_done_callback(span, rpc_info, log_payloads, span_decorator):

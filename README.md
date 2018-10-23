@@ -54,4 +54,4 @@ span.finish()
 ...
 ```
 
-See [examples/interceptor/hello_world](examples//interceptor/hello_world) for a complete example.
+See [examples/hello_world](examples/hello_world) for a complete example.

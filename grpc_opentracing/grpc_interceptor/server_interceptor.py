@@ -8,7 +8,7 @@ import opentracing
 from opentracing.ext import tags as ot_tags
 
 from grpc_opentracing import scope
-from grpc_opentracing.grpcext.grpc_interceptor import utils as grpc_utils
+from grpc_opentracing.grpc_interceptor import utils as grpc_utils
 
 _CANCELLED = 'cancelled'
 

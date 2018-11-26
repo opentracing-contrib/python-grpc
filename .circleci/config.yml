@@ -32,7 +32,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python setup.py test
+            python3 setup.py test
 
   build_python2:
     docker:

@@ -43,7 +43,7 @@ setup(
     license='',
     install_requires=['opentracing>=1.2.2', 'grpcio>=1.8.1', 'six>=1.10'],
     setup_requires=['pytest-runner'],
-    tests_require=['pytest', 'future'],
+    tests_require=['pytest==3.8.2', 'future'],
     keywords=['opentracing'],
     classifiers=[
         'Operating System :: OS Independent',

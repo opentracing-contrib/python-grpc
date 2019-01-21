@@ -18,10 +18,10 @@ complete example.
 
 ```python
 import grpc
-from grpc_opentracing.grpc_interceptor import client_interceptor
+from grpc_opentracing.grpc_interceptor import open_tracing_client_interceptor
 
 tracer = # some OpenTracing Tracer instance
-tracer_interceptor = client_interceptor.OpenTracingClientInterceptor(tracer)
+tracer_interceptor = open_tracing_client_interceptor.OpenTracingClientInterceptor(tracer)
 channel = # the grpc.Channel you created to invoke RPCs
 channel = grpc.intercept_channel(channel, tracer_interceptor)
 
@@ -33,10 +33,10 @@ channel = grpc.intercept_channel(channel, tracer_interceptor)
 ```python
 import grpc
 from concurrent import futures
-from grpc_opentracing.grpc_interceptor import server_interceptor
+from grpc_opentracing.grpc_interceptor import open_tracing_server_interceptor
 
 tracer = # some OpenTracing Tracer instance
-tracer_interceptor = server_interceptor.OpenTracingServerInterceptor(tracer)
+tracer_interceptor = open_tracing_server_interceptor.OpenTracingServerInterceptor(tracer)
 server = grpc.server(
     futures.ThreadPoolExecutor(max_workers=10),
     interceptors=(tracer_interceptor,))

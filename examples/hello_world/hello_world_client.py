@@ -33,7 +33,7 @@ def main():
         },
         service_name='hello_world_client')
     tracer = config.initialize_tracer()
-    tracer_interceptor = client_interceptor.OpenTracingClientInterceptor(
+    tracer_interceptor = open_tracing_client_interceptor.OpenTracingClientInterceptor(
         tracer,
         log_payloads=args.log_payloads)
     with tracer.start_span("step1") as span:

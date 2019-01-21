@@ -46,7 +46,7 @@ def serve():
         },
         service_name='hello_world_server')
     tracer = config.initialize_tracer()
-    tracer_interceptor = server_interceptor.OpenTracingServerInterceptor(
+    tracer_interceptor = open_tracing_server_interceptor.OpenTracingServerInterceptor(
         tracer, log_payloads=args.log_payloads)
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=10),

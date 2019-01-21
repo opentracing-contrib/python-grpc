@@ -11,7 +11,8 @@ pip install grpcio-opentracing
 
 ## Getting started
 
-using official grpc interceptor
+See the below code for basic usage or [examples/hello_world](examples/hello_world) for a
+complete example.
 
 ### Client-side usage example
 
@@ -53,5 +54,3 @@ span = tracer.start_span("do some thing", child_of=span)
 span.finish()
 ...
 ```
-
-See [examples/hello_world](examples/hello_world) for a complete example.

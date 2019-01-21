@@ -11,19 +11,19 @@ pip install grpcio-opentracing
 
 ## Getting started
 
-See the below code for basic usage or [examples/trivial](examples/trivial) for a
+See the below code for basic usage or [examples/hello_world](examples/hello_world) for a
 complete example.
 
 ### Client-side usage example
 
 ```python
+import grpc
 from grpc_opentracing import open_tracing_client_interceptor
-from grpc_opentracing.grpcext import intercept_channel
 
 tracer = # some OpenTracing Tracer instance
-interceptor = open_tracing_client_interceptor(tracer)
+tracer_interceptor = open_tracing_client_interceptor.OpenTracingClientInterceptor(tracer)
 channel = # the grpc.Channel you created to invoke RPCs
-channel = intercept_channel(channel, interceptor)
+channel = grpc.intercept_channel(channel, tracer_interceptor)
 
 # All future RPC activity involving `channel` will be automatically traced.
 ```
@@ -31,44 +31,26 @@ channel = intercept_channel(channel, interceptor)
 ### Server-side usage example
 
 ```python
+import grpc
+from concurrent import futures
 from grpc_opentracing import open_tracing_server_interceptor
-from grpc_opentracing.grpcext import intercept_server
 
 tracer = # some OpenTracing Tracer instance
-interceptor = open_tracing_server_interceptor(tracer)
-server = # the grpc.Server you created to receive RPCs
-server = intercept_server(server, interceptor)
-
+tracer_interceptor = open_tracing_server_interceptor.OpenTracingServerInterceptor(tracer)
+server = grpc.server(
+    futures.ThreadPoolExecutor(max_workers=10),
+    interceptors=(tracer_interceptor,))
 # All future RPC activity involving `server` will be automatically traced.
 ```
 
 ### Integrating with other spans.
 
-`grpcio-opentracing` provides features that let you connect its span with other
-tracing spans. On the client-side, you can write a class that derives from
-`ActiveSpanSource` and provide it when creating the interceptor.
-
 ```python
-class CustomActiveSpanSource(ActiveSpanSource):
-  @classmethod
-  def get_active_span(self):
-    # your custom method of getting the active span
-tracer = # some OpenTracing Tracer instance
-interceptor = open_tracing_client_interceptor(
-                  tracer,
-                  active_span_source=CustomActiveSpanSource)
+from grpc_opentracing import scope
+
+span = scope.get_active_span()
+span = tracer.start_span("do some thing", child_of=span)
+# do some thing
+span.finish()
 ...
 ```
-
-On the server-side, the `context` argument passed into your service methods
-packages the gRPC span created on the server-side.
-
-```python
-class CustomRpcService(...):
-  ...
-  def Method1(self, request, context):
-    span = context.get_active_span()
-    ...
-```
-
-See [examples/integration](examples/integration) for a complete example.

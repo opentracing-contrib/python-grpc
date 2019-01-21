@@ -1,24 +1,30 @@
 from __future__ import print_function
 
-import time
 import argparse
+import time
 
 import grpc
 from concurrent import futures
 from jaeger_client import Config
 
+import hello_world_pb2
+import hello_world_pb2_grpc
 from grpc_opentracing import open_tracing_server_interceptor
-from grpc_opentracing.grpcext import intercept_server
-
-import command_line_pb2
+from grpc_opentracing import scope
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
-class CommandLine(command_line_pb2.CommandLineServicer):
+class HelloWorld(hello_world_pb2_grpc.GreeterServicer):
+    def __init__(self, tracer):
+        self.tracer = tracer
 
-    def Echo(self, request, context):
-        return command_line_pb2.CommandResponse(text=request.text)
+    def SayHello(self, request, context):
+        span = scope.get_active_span()
+        span = self.tracer.start_span("do some thing", child_of=span)
+        time.sleep(0.1)
+        span.finish()
+        return hello_world_pb2.HelloReply(message='Hello, %s!' % request.name)
 
 
 def serve():
@@ -26,6 +32,7 @@ def serve():
     parser.add_argument(
         '--log_payloads',
         action='store_true',
+        default=True,
         help='log request/response objects to open-tracing spans')
     args = parser.parse_args()
 
@@ -37,14 +44,14 @@ def serve():
             },
             'logging': True,
         },
-        service_name='trivial-server')
+        service_name='hello_world_server')
     tracer = config.initialize_tracer()
-    tracer_interceptor = open_tracing_server_interceptor(
+    tracer_interceptor = open_tracing_server_interceptor.OpenTracingServerInterceptor(
         tracer, log_payloads=args.log_payloads)
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    server = intercept_server(server, tracer_interceptor)
-
-    command_line_pb2.add_CommandLineServicer_to_server(CommandLine(), server)
+    server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=10),
+        interceptors=(tracer_interceptor,))
+    hello_world_pb2_grpc.add_GreeterServicer_to_server(HelloWorld(tracer), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     try:
@@ -52,10 +59,6 @@ def serve():
             time.sleep(_ONE_DAY_IN_SECONDS)
     except KeyboardInterrupt:
         server.stop(0)
-
-    time.sleep(2)
-    tracer.close()
-    time.sleep(2)
 
 
 if __name__ == '__main__':

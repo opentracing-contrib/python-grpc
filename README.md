@@ -18,7 +18,7 @@ complete example.
 
 ```python
 import grpc
-from grpc_opentracing.grpc_interceptor import open_tracing_client_interceptor
+from grpc_opentracing import open_tracing_client_interceptor
 
 tracer = # some OpenTracing Tracer instance
 tracer_interceptor = open_tracing_client_interceptor.OpenTracingClientInterceptor(tracer)
@@ -33,7 +33,7 @@ channel = grpc.intercept_channel(channel, tracer_interceptor)
 ```python
 import grpc
 from concurrent import futures
-from grpc_opentracing.grpc_interceptor import open_tracing_server_interceptor
+from grpc_opentracing import open_tracing_server_interceptor
 
 tracer = # some OpenTracing Tracer instance
 tracer_interceptor = open_tracing_server_interceptor.OpenTracingServerInterceptor(tracer)

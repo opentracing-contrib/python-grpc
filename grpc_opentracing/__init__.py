@@ -1,0 +1,2 @@
+from grpc_opentracing.grpc_interceptor import open_tracing_client_interceptor as open_tracing_client_interceptor
+from grpc_opentracing.grpc_interceptor import open_tracing_server_interceptor as open_tracing_server_interceptor

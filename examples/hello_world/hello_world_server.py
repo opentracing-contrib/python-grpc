@@ -9,7 +9,7 @@ from jaeger_client import Config
 
 import hello_world_pb2
 import hello_world_pb2_grpc
-from grpc_opentracing.grpcext.grpc_interceptor import server_interceptor
+from grpc_opentracing.grpc_interceptor import open_tracing_server_interceptor
 from grpc_opentracing import scope
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24

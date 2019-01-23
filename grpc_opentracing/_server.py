@@ -58,6 +58,11 @@ class _OpenTracingServicerContext(grpc.ServicerContext, ActiveSpanSource):
             raise RuntimeError('abort() is not supported with the installed version of grpcio')
         return self._servicer_context.abort(*args, **kwargs)
 
+    def abort_with_status(self, *args, **kwargs):
+        if not hasattr(self._servicer_context, 'abort_with_status'):
+            raise RuntimeError('abort_with_status() is not supported with the installed version of grpcio')
+        return self._servicer_context.abort_with_status(*args, **kwargs)
+
     def set_code(self, code):
         self.code = code
         return self._servicer_context.set_code(code)

@@ -3,7 +3,7 @@ jobs:
   build_python3:
     docker:
       - image: circleci/python:3.6.8
-      
+
     working_directory: ~/repo
 
     steps:
@@ -12,7 +12,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "setup.py" }}
+          - v2-dependencies-{{ checksum "setup.py" }}
 
       - run:
           name: install dependencies
@@ -24,7 +24,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}
+          key: v2-dependencies-{{ checksum "setup.py" }}
         
       - run:
           name: run tests
@@ -35,7 +35,7 @@ jobs:
   build_python2:
     docker:
       - image: circleci/python:2.7.16
-      
+
     working_directory: ~/repo
 
     steps:
@@ -56,8 +56,8 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}
-        
+          key: v2-dependencies-{{ checksum "setup.py" }}
+
       - run:
           name: run tests
           command: |
@@ -67,7 +67,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/python:3.6.8
-      
+
     working_directory: ~/repo
 
     steps:
@@ -88,8 +88,8 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}
-        
+          key: v2-dependencies-{{ checksum "setup.py" }}
+
       - run:
           name: verify git tag vs. version
           command: |

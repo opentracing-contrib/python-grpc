@@ -39,6 +39,7 @@ setup(
     version=VERSION,
     description='Python OpenTracing Extensions for gRPC',
     long_description=readme(),
+    url='https://github.com/opentracing-contrib/python-grpc',
     author='LightStep',
     license='Apache',
     install_requires=['opentracing>=1.2.2', 'grpcio>=1.1.3,<2.0', 'six>=1.10'],

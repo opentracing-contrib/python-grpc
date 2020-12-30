@@ -41,6 +41,7 @@ setup(
     long_description=readme(),
     author='LightStep',
     license='Apache',
+    url="https://github.com/opentracing-contrib/python-grpc",
     install_requires=['opentracing>=1.2.2', 'grpcio>=1.1.3,<2.0', 'six>=1.10'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'future'],

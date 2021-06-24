@@ -132,6 +132,8 @@ class OpenTracingServerInterceptor(grpcext.UnaryServerInterceptor,
         _add_peer_tags(servicer_context.peer(), tags)
         span = self._tracer.start_span(
             operation_name=method, child_of=span_context, tags=tags)
+        # aligning opentracing.tracer with servicer_context.tracer
+        opentracing.tracer.scope_manager.activate(span, True)
         if error is not None:
             span.log_kv({'event': 'error', 'error.object': error})
         return span
